@@ -38,6 +38,7 @@ public class StallSystem : MonoBehaviour {
 		CreateStallComponent ("interior_handle", newStall);
 		CreateStallComponent ("lock", newStall);
 		CreateStallComponent ("floor", newStall);
+		CreateStallComponent ("ceiling", newStall);
 		CreateStallComponent ("paper_dispenser", newStall);
 		CreateStallComponent ("paper", newStall);
 		CreateStallComponent ("bowl", newStall);
