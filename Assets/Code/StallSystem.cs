@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class StallSystem : MonoBehaviour {
 
+	public GameObject stallBasis;
 
 	public class StallData{
 		public Dictionary<string, StallComponent> stallContents;
+		public GameObject stallProp;
 	}
 
 
@@ -23,14 +25,22 @@ public class StallSystem : MonoBehaviour {
 		for (int i = 0; i < 11; i++) {
 			currentStalls.Add(CreateNewStall ());
 		}
+		GenerateStalls ();
 	}
 
-
+	void GenerateStalls(){
+		for (int i = 0; i < currentStalls.Count; i++) {
+			if (currentStalls [i].stallProp == null) {				
+				GameObject stallClone = (GameObject)Instantiate (stallBasis, null);
+				stallClone.transform.position = new Vector3 (i * 7.5f, 0, 7.5f);
+				currentStalls [i].stallProp = stallClone;
+			}
+		}
+	}
 
 	StallData CreateNewStall(){
 		StallData newStall = new StallData ();
 		newStall.stallContents = new Dictionary<string, StallComponent> ();
-
 		CreateStallComponent ("right_wall", newStall);
 		CreateStallComponent ("door", newStall);
 		CreateStallComponent ("exterior_handle", newStall);
