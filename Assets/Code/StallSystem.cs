@@ -5,6 +5,8 @@ using UnityEngine;
 public class StallSystem : MonoBehaviour {
 
 	public GameObject stallBasis;
+	public Transform stallEnd;
+	private float ruinationLimit = 0.8f;
 
 	public class StallData{
 		public Dictionary<string, StallComponent> stallContents;
@@ -34,9 +36,36 @@ public class StallSystem : MonoBehaviour {
 				GameObject stallClone = (GameObject)Instantiate (stallBasis, null);
 				stallClone.transform.position = new Vector3 (i * 7.5f, 0, 7.5f);
 				currentStalls [i].stallProp = stallClone;
+				ApplyStallCondition (currentStalls [i]);
+			}
+		}
+		stallEnd.position = new Vector3 ((currentStalls.Count - 1) * 7.5f, 0, 7.5f);
+	}
+
+
+	void ApplyStallCondition(StallData stall){
+
+	//	for (int i = 0; i < playerParts.Length; i++){
+	//		playerSplatMat.Add(playerParts[i].GetComponent<Renderer>().material);
+	//		playerSplatMat[i].SetFloat("_OcclusionStrength",0);
+	//	}
+
+
+		foreach (KeyValuePair<string, StallComponent> stallPart in stall.stallContents) {
+			Transform foundObject = stall.stallProp.transform.Find (stallPart.Value.name);
+			if (foundObject != null) {
+				Renderer foundRenderer = foundObject.gameObject.GetComponent<Renderer> ();
+
+					if (stallPart.Value.ruination > ruinationLimit) {
+						foundObject.gameObject.SetActive (false);
+				} else if (foundRenderer != null) {
+						foundObject.gameObject.GetComponent<Renderer> ().material.SetFloat ("_OcclusionStrength", stallPart.Value.filth);
+
+				}
 			}
 		}
 	}
+
 
 	StallData CreateNewStall(){
 		StallData newStall = new StallData ();
@@ -49,7 +78,7 @@ public class StallSystem : MonoBehaviour {
 		CreateStallComponent ("lock", newStall);
 		CreateStallComponent ("floor", newStall);
 		CreateStallComponent ("ceiling", newStall);
-		CreateStallComponent ("paper_dispenser", newStall);
+		CreateStallComponent ("dispenser", newStall);
 		CreateStallComponent ("paper", newStall);
 		CreateStallComponent ("bowl", newStall);
 		CreateStallComponent ("cistern", newStall);
@@ -57,8 +86,56 @@ public class StallSystem : MonoBehaviour {
 		CreateStallComponent ("flusher", newStall);
 		CreateStallComponent ("toilet_lid", newStall);
 		CreateStallComponent ("toilet_seat", newStall);
+
+		CleanupStallData (newStall);
+
 		return newStall;
 	}
+
+	void CleanupStallData(StallData stall){
+		foreach (KeyValuePair<string, StallComponent> stallPart in stall.stallContents) {
+			
+			switch (stallPart.Value.name) {
+			case("ceiling"):
+			case("floor"):
+				if (stallPart.Value.ruination > ruinationLimit) {
+					stallPart.Value.ruination = 0.7f;
+				}
+				break;
+
+			case("bowl"):
+				if (stallPart.Value.ruination > ruinationLimit) {
+					stall.stallContents ["cistern"].ruination = 1.0f;
+					stall.stallContents ["cistern_lid"].ruination = 1.0f;
+					stall.stallContents ["toilet_lid"].ruination = 1.0f;
+					stall.stallContents ["toilet_seat"].ruination = 1.0f;
+					stall.stallContents ["flusher"].ruination = 1.0f;
+				}break;
+			case("door"):
+				if (stallPart.Value.ruination > ruinationLimit) {
+					stall.stallContents ["exterior_handle"].ruination = 1.0f;
+					stall.stallContents ["occupied_sign"].ruination = 1.0f;
+					stall.stallContents ["interior_handle"].ruination = 1.0f;
+					stall.stallContents ["lock"].ruination = 1.0f;
+				}break;
+			case("right_wall"):
+				if (stallPart.Value.ruination > ruinationLimit) {
+					stall.stallContents ["paper"].ruination = 1.0f;
+					stall.stallContents ["dispenser"].ruination = 1.0f;
+				}break;
+			case("dispenser"):
+				if (stallPart.Value.ruination > ruinationLimit) {
+					stall.stallContents ["paper"].ruination = 1.0f;
+				}break;
+			case("cistern"):
+				if (stallPart.Value.ruination > ruinationLimit) {
+					stall.stallContents ["cistern_lid"].ruination = 1.0f;
+					stall.stallContents ["flusher"].ruination = 1.0f;
+				}break;
+			}
+		}
+	}
+
 
 	void CreateStallComponent(string componentName, StallData parentStallData){
 		StallComponent newComponent = new StallComponent ();
