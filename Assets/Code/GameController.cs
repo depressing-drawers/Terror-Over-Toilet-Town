@@ -15,22 +15,45 @@ public class GameController : MonoBehaviour {
 	//	Cursor.lockState = CursorLockMode.Locked;
 
 		Gameboss.gameControl = GetComponent<GameController> ();
+		Gameboss.inputControl = GetComponent<InputController> ();
 		Gameboss.stalls = GetComponent<StallSystem> ();
 		Gameboss.movement = GetComponent<MovementCode> ();
-
-
+		Gameboss.blur = GetComponent<ScreenBlur> ();
 		StartNewGame ();
 	}
 
 	void StartNewGame(){
 
 		//Gameboss.fader.SetupScreenFader ();
+
 		Gameboss.ResetPlayerData ();
 		Gameboss.stalls.SetupStalls ();
+		Gameboss.blur.SetupBlurSystem ();
+
+		StartCoroutine (StartTiming ());
 
 	//	Gameboss.LoadPlayerOptions ();
 	//	Gameboss.ApplyPlayerOptions ();
 	}
+
+	IEnumerator StartTiming(){
+		float startDelay = 0.8f;
+
+		float i = 0.0f;
+		float rate = 1.0f / 360f;
+
+		while (true) {
+			i += Time.deltaTime * rate;
+			if (Input.anyKeyDown) {break;}
+			yield return null;
+		}
+
+		Gameboss.blur.ToggleBlur (false, true, true, startDelay);
+		yield return new WaitForSeconds (startDelay);
+		Gameboss.currentState = Gameboss.gameStates.ingame;
+	
+	}
+
 
 	// Use this for initialization
 	void Start () {

@@ -7,8 +7,10 @@ public class Gameboss : MonoBehaviour {
 
 
 	public static GameController gameControl;
+	public static InputController inputControl;
 	public static MovementCode movement;
 	public static StallSystem stalls;
+	public static ScreenBlur blur;
 
 
 	public static class GameOptions{			

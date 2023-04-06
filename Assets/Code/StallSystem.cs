@@ -14,6 +14,7 @@ public class StallSystem : MonoBehaviour {
 		public TextMesh stallNumber;
 		public lidState doorState;
 		public Transform doorObject;
+		public bool isLocked;
 	}
 
 	public class StallComponent	{
@@ -30,8 +31,8 @@ public class StallSystem : MonoBehaviour {
 	}
 
 	private Vector3[] doorAngles = new Vector3[]{
-		new Vector3(0,0,0),
 		new Vector3(0,-80,0),
+		new Vector3(0,0,0),
 		new Vector3(0,0,0),
 		new Vector3(0,-15,0)
 	};
@@ -40,7 +41,21 @@ public class StallSystem : MonoBehaviour {
 
 
 
+	public void ToggleDoor(){
+		StallData currentStall = currentStalls [Gameboss.movement.playerCoord [0]];
+		if (!currentStall.isLocked) {
 
+			lidState targetState = lidState.open;
+			switch (currentStall.doorState) {
+			case(lidState.ajar):
+			case(lidState.closed):
+				targetState = lidState.open;break;
+			case(lidState.open):targetState = lidState.closed;break;
+			}
+			currentStall.doorState = targetState;
+			ApplyDoorState (currentStall);
+		}
+	}
 
 
 	public void SetupStalls(){
@@ -154,6 +169,7 @@ public class StallSystem : MonoBehaviour {
 				case(1):stall.doorState = lidState.closed	;break;
 				case(2):stall.doorState = lidState.ajar		;break;				
 			}
+			if (stall.doorState == lidState.closed) {stall.isLocked = (Random.Range (0, 5) == 0);}
 		}
 
 
@@ -184,6 +200,7 @@ public class StallSystem : MonoBehaviour {
 					stall.stallContents ["lock"].ruination = 1.0f;
 				}break;
 			case("right_wall"):
+				stallPart.Value.filth = stall.stallContents ["ceiling"].filth;	
 				if (stallPart.Value.ruination > ruinationLimit) {
 					stall.stallContents ["paper"].ruination = 1.0f;
 					stall.stallContents ["dispenser"].ruination = 1.0f;
