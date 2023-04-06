@@ -19,8 +19,10 @@ public class MovementCode : MonoBehaviour {
 			MovePlayerPosition (false);
 		}
 		if (Input.GetKeyDown (KeyCode.D)) {
+			MovePlayerLocation (true);
 		}
 		if (Input.GetKeyDown (KeyCode.A)) {
+			MovePlayerLocation (false);
 		}
 	}
 
@@ -39,6 +41,20 @@ public class MovementCode : MonoBehaviour {
 		}
 	}
 
+	void MovePlayerLocation(bool right){
+		if (playerCoord [1] == 0) {
+			int moveIncrement = 1;
+			if (!right) {moveIncrement *= -1;}
+
+			int expectedValue = playerCoord [0] + moveIncrement;
+			if (expectedValue > -1 && expectedValue < Gameboss.stalls.currentStalls.Count) {
+				playerCoord [0] = expectedValue;
+				MovePlayer ();
+			}
+		}
+	}
+
+
 	void MovePlayer(){
 		playerObject.position = new Vector3 (playerCoord [0] * widthValue, playerHeight, playerCoord [1] * widthValue);
 	}
@@ -50,14 +66,11 @@ public class MovementCode : MonoBehaviour {
 	//	case(1):targetRotation = Vector3.zero;break;
 		case(2):if(!facingForward){targetRotation = new Vector3(0,180,0);facingForward=false;}break;
 		case(3):targetRotation = new Vector3(0,180,0);facingForward=false;break;
-		default:facingForward = true;break;
-			
+			default:facingForward = true;break;
 		}
 		playerObject.eulerAngles = targetRotation;
 	}
 
-	void ChangeStallPosition(){
-	}
 
 	// Use this for initialization
 	void Start () {
