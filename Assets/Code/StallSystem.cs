@@ -16,6 +16,7 @@ public class StallSystem : MonoBehaviour {
 		public lidState lidState;
 		public Transform doorObject;
 		public Transform lidObject;
+		public Transform signObject;
 		public bool isLocked;
 	}
 
@@ -116,15 +117,21 @@ public class StallSystem : MonoBehaviour {
 		if (stall.lidState == lidState.ajar) {stall.lidObject.localEulerAngles += new Vector3 (Random.Range (-4, 4), 0, 0);}
 	}
 
-
+	void ApplyLockState(StallData stall){
+		if (stall.isLocked) {
+			stall.signObject.localEulerAngles = new Vector3 (180, 90, 90);
+		} else {
+			stall.signObject.localEulerAngles = new Vector3 (0, 90, 90);
+		}
+	}
 
 	void ApplyStallCondition(StallData stall){
 		
 		for (int i = 0; i < stall.stallProp.transform.childCount; i++) {
 			string childName = stall.stallProp.transform.GetChild (i).name;
 
-			if (childName == "door_axis") 		{ stall.doorObject = stall.stallProp.transform.GetChild (i);	}
-			if (childName == "toilet_lid_axis") { stall.lidObject = stall.stallProp.transform.GetChild (i);	}
+			if (childName == "door_axis") 		{ stall.doorObject 	= stall.stallProp.transform.GetChild (i);				}
+			if (childName == "toilet_lid_axis") { stall.lidObject 	= stall.stallProp.transform.GetChild (i);				}
 
 
 			if (stall.stallContents.ContainsKey (childName)) {
@@ -141,6 +148,10 @@ public class StallSystem : MonoBehaviour {
 			if (stall.stallProp.transform.GetChild (i).childCount > 0) {
 				for (int j = 0; j < stall.stallProp.transform.GetChild (i).childCount; j++) {
 					string subChildName = stall.stallProp.transform.GetChild (i).GetChild (j).name;
+
+					if (subChildName == "occupied_sign") 	{ stall.signObject 	= stall.stallProp.transform.GetChild (i).GetChild(j).Find("sign");	}
+
+
 					if (stall.stallContents.ContainsKey (subChildName)) {
 						StallComponent foundComponent = stall.stallContents [subChildName];
 						Renderer subChildRenderer = stall.stallProp.transform.GetChild (i).GetChild(j).GetComponent<Renderer>();
@@ -158,6 +169,26 @@ public class StallSystem : MonoBehaviour {
 		}
 		ApplyDoorState (stall);
 		ApplyLidState  (stall);
+		ApplyLockState (stall);
+	}
+
+
+
+
+	IEnumerator LidTiming(Vector3[] targetCoords, Transform rotationObject){
+		float i = 0.0f;
+		float rate = 1.0f / 0.2f;
+
+		Vector3 startPos 	= targetCoords[0];
+		Vector3 endPos		= targetCoords[0];
+
+		while (i < 1.0f) {
+			i += Time.deltaTime * rate;
+			rotationObject.localEulerAngles = Vector3.Lerp (startPos, endPos, i);
+			yield return null;
+		}
+		rotationObject.localEulerAngles = endPos;
+		Gameboss.isAnimating = false;
 	}
 
 

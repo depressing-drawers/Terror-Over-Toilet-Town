@@ -47,7 +47,7 @@ public class InputController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Gameboss.currentState == Gameboss.gameStates.ingame) {
+		if (Gameboss.currentState == Gameboss.gameStates.ingame && !Gameboss.isAnimating) {
 			InputLogic ();
 		}
 	}

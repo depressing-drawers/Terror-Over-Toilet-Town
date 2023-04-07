@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ScreenBlur : MonoBehaviour {
 
+	public GameObject UIHolder;
 	public GameObject shadeObject;
 	public GameObject blurObject;
 	public TextMesh[] textObjects;
@@ -12,6 +13,7 @@ public class ScreenBlur : MonoBehaviour {
 	public Material shadeMat;
 
 	public void SetupBlurSystem(){
+		if (!UIHolder.activeSelf) {UIHolder.SetActive (true);}
 		blurMat = blurObject.GetComponent<Renderer> ().material;
 		shadeMat = shadeObject.GetComponent<Renderer> ().material;
 		textMats = new Material[textObjects.Length];
@@ -38,9 +40,11 @@ public class ScreenBlur : MonoBehaviour {
 			i += Time.deltaTime * rate;
 			float alphaValue = Mathf.Lerp (startAlpha, endAlpha, i);
 			blurMat.SetFloat ("_Size", alphaValue);
-			shadeMat.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, alphaValue);
+			if (doFade) {shadeMat.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, alphaValue);}
+			if(doText){
 			foreach (Material textColor in textMats) {
 				textColor.color = new Color (textColor.color.r, textColor.color.g, textColor.color.b, alphaValue);
+				}
 			}
 			yield return null;
 		}

@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour {
 		Gameboss.stalls = GetComponent<StallSystem> ();
 		Gameboss.movement = GetComponent<MovementCode> ();
 		Gameboss.blur = GetComponent<ScreenBlur> ();
+		Gameboss.rank = GetComponent<StallRankingSystem> ();
+
 		StartNewGame ();
 	}
 
@@ -40,7 +42,7 @@ public class GameController : MonoBehaviour {
 		float startDelay = 0.8f;
 
 		float i = 0.0f;
-		float rate = 1.0f / 360f;
+		float rate = 1.0f / 420f;
 
 		while (true) {
 			i += Time.deltaTime * rate;

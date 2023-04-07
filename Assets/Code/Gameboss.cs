@@ -11,6 +11,7 @@ public class Gameboss : MonoBehaviour {
 	public static MovementCode movement;
 	public static StallSystem stalls;
 	public static ScreenBlur blur;
+	public static StallRankingSystem rank;
 
 
 	public static class GameOptions{			
@@ -36,6 +37,7 @@ public class Gameboss : MonoBehaviour {
 	}
 
 	public static gameStates currentState = gameStates.loading;
+	public static bool isAnimating = false;
 
 	public static class PlayerData{
 		public static bool gameComplete = false;
