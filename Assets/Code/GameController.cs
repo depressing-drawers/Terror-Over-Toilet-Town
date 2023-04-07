@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
 
 	void SetupGame(){
 		Gameboss.currentState = Gameboss.gameStates.loading;
-
+		Gameboss.gameStage = Gameboss.stageOfGame.title;
 	//	Cursor.visible = false;
 	//	Cursor.lockState = CursorLockMode.Locked;
 

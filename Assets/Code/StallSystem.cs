@@ -62,8 +62,10 @@ public class StallSystem : MonoBehaviour {
 				targetState = lidState.open;break;
 			case(lidState.open):targetState = lidState.closed;break;
 			}
-			currentStall.doorState = targetState;
-			ApplyDoorState (currentStall);
+			Gameboss.isAnimating = true;
+			StartCoroutine (LidTiming (currentStall, new lidState[]{ currentStall.doorState, targetState }, true));
+	//		currentStall.doorState = targetState;
+	//		ApplyDoorState (currentStall);
 		}
 	}
 
@@ -78,8 +80,11 @@ public class StallSystem : MonoBehaviour {
 				targetState = lidState.open;break;
 			case(lidState.open):targetState = lidState.closed;break;
 			}
-			currentStall.lidState = targetState;
-			ApplyLidState (currentStall);
+
+			Gameboss.isAnimating = true;
+			StartCoroutine (LidTiming (currentStall, new lidState[]{ currentStall.lidState, targetState }, false));
+	//		currentStall.lidState = targetState;
+	//		ApplyLidState (currentStall);
 	}
 
 
@@ -107,15 +112,56 @@ public class StallSystem : MonoBehaviour {
 
 	void ApplyDoorState(StallData stall){
 		stall.doorObject.localEulerAngles = doorAngles[(int)stall.doorState];
-		if (stall.doorState == lidState.ajar) {
-			stall.doorObject.localEulerAngles += new Vector3 (0, Random.Range (-15, 16), 0);		
-		}
 	}
 
 	void ApplyLidState(StallData stall){
 		stall.lidObject.localEulerAngles = lidAngles[(int)stall.lidState];
-		if (stall.lidState == lidState.ajar) {stall.lidObject.localEulerAngles += new Vector3 (Random.Range (-4, 4), 0, 0);}
 	}
+
+
+
+
+
+
+	IEnumerator LidTiming(StallData currentStall, lidState[] lidTargets, bool isDoor){//if change isDoor also need to change ReturnAppropriateLidEulers
+		float i = 0.0f;
+		float rate = 1.0f / 0.15f;
+		Vector3[] eulerTargets = ReturnAppropriateLidEulers(lidTargets,isDoor);
+		Transform 		rotationObject = currentStall.doorObject;
+		if (!isDoor) {	rotationObject = currentStall.lidObject;	}
+
+		while (i < 1.0f) {
+			i += Time.deltaTime * rate;
+				rotationObject.localEulerAngles = Vector3.Lerp (eulerTargets[0], eulerTargets[1], i);
+			yield return null;
+		}
+		rotationObject.localEulerAngles = eulerTargets[1];
+
+		if (isDoor) {
+			currentStall.doorState = lidTargets[1];
+			ApplyDoorState (currentStall);
+		} else {
+			currentStall.lidState = lidTargets[1];
+			ApplyLidState (currentStall);
+		}
+
+		Gameboss.isAnimating = false;
+	}
+
+
+	Vector3[] ReturnAppropriateLidEulers(lidState[] lidTargets, bool isDoor){
+		Vector3[] returnedEulers = new Vector3[2];
+		Vector3[] 		appropriateAngles = doorAngles;
+		if (!isDoor) {	appropriateAngles = lidAngles;	}
+				
+		returnedEulers[0] = appropriateAngles[(int)lidTargets[0]];
+		returnedEulers[1] = appropriateAngles[(int)lidTargets[1]];
+		return returnedEulers;
+	}
+
+
+
+
 
 	void ApplyLockState(StallData stall){
 		if (stall.isLocked) {
@@ -170,25 +216,6 @@ public class StallSystem : MonoBehaviour {
 		ApplyDoorState (stall);
 		ApplyLidState  (stall);
 		ApplyLockState (stall);
-	}
-
-
-
-
-	IEnumerator LidTiming(Vector3[] targetCoords, Transform rotationObject){
-		float i = 0.0f;
-		float rate = 1.0f / 0.2f;
-
-		Vector3 startPos 	= targetCoords[0];
-		Vector3 endPos		= targetCoords[0];
-
-		while (i < 1.0f) {
-			i += Time.deltaTime * rate;
-			rotationObject.localEulerAngles = Vector3.Lerp (startPos, endPos, i);
-			yield return null;
-		}
-		rotationObject.localEulerAngles = endPos;
-		Gameboss.isAnimating = false;
 	}
 
 

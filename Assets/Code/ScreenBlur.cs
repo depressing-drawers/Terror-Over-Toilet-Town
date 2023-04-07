@@ -27,7 +27,7 @@ public class ScreenBlur : MonoBehaviour {
 	}
 
 	IEnumerator BlurTiming(bool blurOn, bool doFade, bool doText, float blurTime){
-
+		if (!blurOn) {blurObject.SetActive (true);	}
 		float i = 0.0f;
 		float rate = 1.0f / blurTime;
 
@@ -51,6 +51,8 @@ public class ScreenBlur : MonoBehaviour {
 		blurMat.SetFloat ("_Size", endAlpha);
 		shadeMat.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, endAlpha);
 		foreach (Material textColor in textMats) {textColor.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, endAlpha);	}
+		if (!blurOn) {blurObject.SetActive (false);	}
+
 	}
 
 	// Use this for initialization

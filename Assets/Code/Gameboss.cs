@@ -36,6 +36,14 @@ public class Gameboss : MonoBehaviour {
 		loading
 	}
 
+	public enum stageOfGame{
+		title,
+		game,
+		shitCheck,
+		results
+	}
+
+	public static stageOfGame gameStage = stageOfGame.title;
 	public static gameStates currentState = gameStates.loading;
 	public static bool isAnimating = false;
 
