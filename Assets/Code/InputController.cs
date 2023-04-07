@@ -33,7 +33,7 @@ public class InputController : MonoBehaviour {
 			if (!Gameboss.movement.facingForward) {
 				Gameboss.stalls.ToggleDoor ();
 			} else {
-				
+				Gameboss.stalls.ToggleLid ();
 			}break;
 		}
 	}

@@ -13,7 +13,9 @@ public class StallSystem : MonoBehaviour {
 		public GameObject stallProp;
 		public TextMesh stallNumber;
 		public lidState doorState;
+		public lidState lidState;
 		public Transform doorObject;
+		public Transform lidObject;
 		public bool isLocked;
 	}
 
@@ -37,6 +39,13 @@ public class StallSystem : MonoBehaviour {
 		new Vector3(0,-15,0)
 	};
 
+	private Vector3[] lidAngles = new Vector3[]{
+		new Vector3(81,0,0),
+		new Vector3(0,0,0),
+		new Vector3(0,0,0),
+		new Vector3(35,0,0)
+	};
+
 	public List<StallData> currentStalls = new List<StallData>();
 
 
@@ -56,6 +65,22 @@ public class StallSystem : MonoBehaviour {
 			ApplyDoorState (currentStall);
 		}
 	}
+
+
+	public void ToggleLid(){
+		StallData currentStall = currentStalls [Gameboss.movement.playerCoord [0]];
+
+			lidState targetState = lidState.open;
+			switch (currentStall.lidState) {
+			case(lidState.ajar):
+			case(lidState.closed):
+				targetState = lidState.open;break;
+			case(lidState.open):targetState = lidState.closed;break;
+			}
+			currentStall.lidState = targetState;
+			ApplyLidState (currentStall);
+	}
+
 
 
 	public void SetupStalls(){
@@ -86,27 +111,32 @@ public class StallSystem : MonoBehaviour {
 		}
 	}
 
+	void ApplyLidState(StallData stall){
+		stall.lidObject.localEulerAngles = lidAngles[(int)stall.lidState];
+		if (stall.lidState == lidState.ajar) {stall.lidObject.localEulerAngles += new Vector3 (Random.Range (-4, 4), 0, 0);}
+	}
+
+
 
 	void ApplyStallCondition(StallData stall){
 		
 		for (int i = 0; i < stall.stallProp.transform.childCount; i++) {
 			string childName = stall.stallProp.transform.GetChild (i).name;
 
-			if (childName == "door_axis") { stall.doorObject = stall.stallProp.transform.GetChild (i);	}
+			if (childName == "door_axis") 		{ stall.doorObject = stall.stallProp.transform.GetChild (i);	}
+			if (childName == "toilet_lid_axis") { stall.lidObject = stall.stallProp.transform.GetChild (i);	}
+
 
 			if (stall.stallContents.ContainsKey (childName)) {
 				StallComponent foundComponent = stall.stallContents [childName];
 				Renderer childRenderer = stall.stallProp.transform.GetChild (i).GetComponent<Renderer>();
 
-				if (childRenderer != null) {
 					if (foundComponent.ruination > ruinationLimit) {
-						childRenderer.gameObject.SetActive (false);
+						stall.stallProp.transform.GetChild (i).gameObject.SetActive (false);
 							} else {
-						childRenderer.material.SetFloat ("_OcclusionStrength", foundComponent.filth);
-								}
-							}			
+					if (childRenderer != null) {childRenderer.material.SetFloat ("_OcclusionStrength", foundComponent.filth);}
 						}
-
+					}
 
 			if (stall.stallProp.transform.GetChild (i).childCount > 0) {
 				for (int j = 0; j < stall.stallProp.transform.GetChild (i).childCount; j++) {
@@ -115,11 +145,11 @@ public class StallSystem : MonoBehaviour {
 						StallComponent foundComponent = stall.stallContents [subChildName];
 						Renderer subChildRenderer = stall.stallProp.transform.GetChild (i).GetChild(j).GetComponent<Renderer>();
 
-						if (subChildRenderer != null) {
+
 							if (foundComponent.ruination > ruinationLimit) {
-								subChildRenderer.gameObject.SetActive (false);
+								stall.stallProp.transform.GetChild (i).GetChild(j).gameObject.SetActive (false);
 							} else {
-								subChildRenderer.material.SetFloat ("_OcclusionStrength", foundComponent.filth);
+								if (subChildRenderer != null) {subChildRenderer.material.SetFloat ("_OcclusionStrength", foundComponent.filth);
 							}
 						}			
 					}
@@ -127,6 +157,7 @@ public class StallSystem : MonoBehaviour {
 			}		
 		}
 		ApplyDoorState (stall);
+		ApplyLidState  (stall);
 	}
 
 
@@ -169,9 +200,21 @@ public class StallSystem : MonoBehaviour {
 				case(1):stall.doorState = lidState.closed	;break;
 				case(2):stall.doorState = lidState.ajar		;break;				
 			}
-			if (stall.doorState == lidState.closed) {stall.isLocked = (Random.Range (0, 5) == 0);}
+			if (stall.doorState == lidState.closed && stall.stallContents["door"].ruination < ruinationLimit &&
+				stall.stallContents["lock"].ruination < ruinationLimit) {stall.isLocked = (Random.Range (0, 5) == 0);}
 		}
 
+
+		if (stall.stallContents ["toilet_lid"].ruination > ruinationLimit) {
+			stall.lidState = lidState.missing;
+		} else {
+			int lidChoice = Random.Range (0, 2);
+			switch (lidChoice) {
+			case(0):stall.lidState = lidState.open		;break;
+			case(1):stall.lidState = lidState.closed	;break;
+			case(2):stall.lidState = lidState.ajar		;break;				
+			}
+		}
 
 
 		foreach (KeyValuePair<string, StallComponent> stallPart in stall.stallContents) {
