@@ -53,7 +53,22 @@ public class GameController : MonoBehaviour {
 		Gameboss.blur.ToggleBlur (false, true, true, startDelay);
 		yield return new WaitForSeconds (startDelay);
 		Gameboss.currentState = Gameboss.gameStates.ingame;
-	
+		Gameboss.gameStage = Gameboss.stageOfGame.game;
+	}
+
+
+	public void PrepareToShit(){
+		Gameboss.gameStage = Gameboss.stageOfGame.shitCheck;
+		Gameboss.isAnimating = true;
+		Gameboss.blur.ToggleTextHolders (false);
+		Gameboss.blur.ToggleTextHolders (true, 1);
+		Gameboss.blur.ToggleBlur (true, true, true);
+	}
+
+	public void DenyTheShit(){
+		Gameboss.gameStage = Gameboss.stageOfGame.game;
+		Gameboss.isAnimating = true;
+		Gameboss.blur.ToggleBlur (false, true, true,0.4f);
 	}
 
 

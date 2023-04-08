@@ -5,20 +5,18 @@ using UnityEngine;
 public class InputController : MonoBehaviour {
 
 	void InputLogic(){
-		if (Input.GetKeyDown (KeyCode.W)) {
-			Gameboss.movement.MovePlayerPosition (true);
-		}
-		if (Input.GetKeyDown (KeyCode.S)) {
-			Gameboss.movement.MovePlayerPosition (false);
-		}
-		if (Input.GetKeyDown (KeyCode.D)) {
-			Gameboss.movement.MovePlayerLocation (true);
-		}
-		if (Input.GetKeyDown (KeyCode.A)) {
-			Gameboss.movement.MovePlayerLocation (false);
-		}
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			ContextSensitiveInput ();
+
+		if(Gameboss.gameStage == Gameboss.stageOfGame.game){
+			
+		if (Input.GetKeyDown (KeyCode.W)) 		{Gameboss.movement.MovePlayerPosition (true);	}
+		if (Input.GetKeyDown (KeyCode.S)) 		{Gameboss.movement.MovePlayerPosition (false);	}
+		if (Input.GetKeyDown (KeyCode.D)) 		{Gameboss.movement.MovePlayerLocation (true);	}
+		if (Input.GetKeyDown (KeyCode.A)) 		{Gameboss.movement.MovePlayerLocation (false);	}
+		if (Input.GetKeyDown (KeyCode.Space)) 	{ContextSensitiveInput ();						}
+		if (Input.GetKeyDown (KeyCode.Return))	{Gameboss.gameControl.PrepareToShit ();			}
+
+		}else if(Gameboss.gameStage == Gameboss.stageOfGame.shitCheck){
+			if (Input.GetKeyDown (KeyCode.N)) 	{Gameboss.gameControl.DenyTheShit ();			}
 		}
 	}
 

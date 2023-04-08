@@ -5,10 +5,14 @@ using UnityEngine;
 public class StallRankingSystem : MonoBehaviour {
 
 
-
-	public int ReturnStallScore(){
-		int stallScore = 1000;
-		return stallScore;
+	public float ReturnStallScore(StallSystem.StallData stall){
+		float stallScore = 10000;
+		float minusScore = 0;
+		foreach (KeyValuePair<string,StallSystem.StallComponent> stallPart in stall.stallContents) {
+			minusScore = (stallPart.Value.filth * 10) * stallPart.Value.multiplier;
+			minusScore += (stallPart.Value.ruination * 10) * stallPart.Value.multiplier;
+		}
+		return stallScore - minusScore;
 	}
 
 

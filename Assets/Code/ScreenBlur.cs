@@ -7,6 +7,7 @@ public class ScreenBlur : MonoBehaviour {
 	public GameObject UIHolder;
 	public GameObject shadeObject;
 	public GameObject blurObject;
+	public GameObject[] textHolders;
 	public TextMesh[] textObjects;
 	public Material[] textMats;
 	public Material blurMat;
@@ -20,6 +21,16 @@ public class ScreenBlur : MonoBehaviour {
 		for (int i = 0; i < textObjects.Length; i++) {
 			textMats [i] = textObjects [i].GetComponent<Renderer> ().material;
 		}
+		ToggleTextHolders (true);
+		ToggleTextHolders (false, 1);
+	}
+
+	public void ToggleTextHolders(bool turnOn, int toggleRef = -1){
+		for (int i = 0; i < textHolders.Length; i++) {
+			if (toggleRef == -1 || toggleRef == i) {
+				textHolders [i].SetActive (turnOn);
+			}
+		}
 	}
 
 	public void ToggleBlur(bool blurOn, bool doFade = false, bool doText = false, float blurTime = 1f){
@@ -27,7 +38,7 @@ public class ScreenBlur : MonoBehaviour {
 	}
 
 	IEnumerator BlurTiming(bool blurOn, bool doFade, bool doText, float blurTime){
-		if (!blurOn) {blurObject.SetActive (true);	}
+		blurObject.SetActive (true);
 		float i = 0.0f;
 		float rate = 1.0f / blurTime;
 
@@ -40,7 +51,7 @@ public class ScreenBlur : MonoBehaviour {
 			i += Time.deltaTime * rate;
 			float alphaValue = Mathf.Lerp (startAlpha, endAlpha, i);
 			blurMat.SetFloat ("_Size", alphaValue);
-			if (doFade) {shadeMat.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, alphaValue);}
+			if(doFade) {shadeMat.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, alphaValue);}
 			if(doText){
 			foreach (Material textColor in textMats) {
 				textColor.color = new Color (textColor.color.r, textColor.color.g, textColor.color.b, alphaValue);
@@ -50,9 +61,9 @@ public class ScreenBlur : MonoBehaviour {
 		}
 		blurMat.SetFloat ("_Size", endAlpha);
 		shadeMat.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, endAlpha);
-		foreach (Material textColor in textMats) {textColor.color = new Color (shadeMat.color.r, shadeMat.color.g, shadeMat.color.b, endAlpha);	}
+		foreach (Material textColor in textMats) {textColor.color = new Color (textColor.color.r, textColor.color.g, textColor.color.b, endAlpha);	}
 		if (!blurOn) {blurObject.SetActive (false);	}
-
+		Gameboss.isAnimating = false;
 	}
 
 	// Use this for initialization

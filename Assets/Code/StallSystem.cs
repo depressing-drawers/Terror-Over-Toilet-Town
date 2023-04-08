@@ -18,12 +18,14 @@ public class StallSystem : MonoBehaviour {
 		public Transform lidObject;
 		public Transform signObject;
 		public bool isLocked;
+		public float stallScore;
 	}
 
 	public class StallComponent	{
 		public string name;
 		public float filth;		//0.0 - 1.0
 		public float ruination;	//0.0 - 1.0
+		public float multiplier;
 	}
 
 	public enum lidState{
@@ -224,25 +226,26 @@ public class StallSystem : MonoBehaviour {
 	StallData CreateNewStall(){
 		StallData newStall = new StallData ();
 		newStall.stallContents = new Dictionary<string, StallComponent> ();
-		CreateStallComponent ("right_wall", newStall);
-		CreateStallComponent ("door", newStall);
-		CreateStallComponent ("exterior_handle", newStall);
-		CreateStallComponent ("occupied_sign", newStall);
-		CreateStallComponent ("interior_handle", newStall);
-		CreateStallComponent ("lock", newStall);
-		CreateStallComponent ("floor", newStall);
-		CreateStallComponent ("ceiling", newStall);
-		CreateStallComponent ("back_wall", newStall);
-		CreateStallComponent ("dispenser", newStall);
-		CreateStallComponent ("paper", newStall);
-		CreateStallComponent ("bowl", newStall);
-		CreateStallComponent ("cistern", newStall);
-		CreateStallComponent ("cistern_lid", newStall);
-		CreateStallComponent ("flusher", newStall);
-		CreateStallComponent ("toilet_lid", newStall);
-		CreateStallComponent ("toilet_seat", newStall);
+		CreateStallComponent ("right_wall", newStall,3);
+		CreateStallComponent ("door", newStall,3);
+		CreateStallComponent ("exterior_handle", newStall,1);
+		CreateStallComponent ("occupied_sign", newStall,1);
+		CreateStallComponent ("interior_handle", newStall,1);
+		CreateStallComponent ("lock", newStall,3);
+		CreateStallComponent ("floor", newStall,2);
+		CreateStallComponent ("ceiling", newStall,1);
+		CreateStallComponent ("back_wall", newStall,1);
+		CreateStallComponent ("dispenser", newStall,2);
+		CreateStallComponent ("paper", newStall,3);
+		CreateStallComponent ("bowl", newStall,3);
+		CreateStallComponent ("cistern", newStall,2);
+		CreateStallComponent ("cistern_lid", newStall,1);
+		CreateStallComponent ("flusher", newStall,2);
+		CreateStallComponent ("toilet_lid", newStall,1);
+		CreateStallComponent ("toilet_seat", newStall,3);
 
 		CleanupStallData (newStall);
+		newStall.stallScore = Gameboss.rank.ReturnStallScore (newStall);
 		return newStall;
 	}
 
@@ -323,11 +326,12 @@ public class StallSystem : MonoBehaviour {
 	}
 
 
-	void CreateStallComponent(string componentName, StallData parentStallData){
+	void CreateStallComponent(string componentName, StallData parentStallData, float importanceMultiplier){
 		StallComponent newComponent = new StallComponent ();
 		newComponent.name = componentName;
-		newComponent.filth 	   = Random.Range (0, 11) * 0.1f;
-		newComponent.ruination = Random.Range (0, 11) * 0.1f;
+		newComponent.filth 	   	= Random.Range (0, 11) * 0.1f;
+		newComponent.ruination 	= Random.Range (0, 11) * 0.1f;
+		newComponent.multiplier = importanceMultiplier;
 		parentStallData.stallContents.Add (newComponent.name, newComponent);
 	}
 
