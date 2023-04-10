@@ -17,6 +17,8 @@ public class InputController : MonoBehaviour {
 
 		}else if(Gameboss.gameStage == Gameboss.stageOfGame.shitCheck){
 			if (Input.GetKeyDown (KeyCode.N)) 	{Gameboss.gameControl.DenyTheShit ();			}
+			if (Input.GetKeyDown (KeyCode.Y)) 	{Gameboss.gameControl.AuthoriseShit ();			}
+
 		}
 	}
 

@@ -71,6 +71,23 @@ public class GameController : MonoBehaviour {
 		Gameboss.blur.ToggleBlur (false, true, true,0.4f);
 	}
 
+	public void AuthoriseShit(){
+		Gameboss.gameStage = Gameboss.stageOfGame.results;	
+		Gameboss.isAnimating = true;
+		Gameboss.blur.ToggleBlur (false, true, true,0.4f);
+		Gameboss.blur.ToggleFade (true,0.4f);
+		Gameboss.blur.endText.gameObject.SetActive (false);
+		Gameboss.blur.ToggleTextHolders (true, 2);
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.gameplayText));
+		StartCoroutine (EndTextTiming ());
+	}
+
+	IEnumerator EndTextTiming(){
+		yield return new WaitForSeconds (0.4f);
+		Gameboss.blur.endText.gameObject.SetActive (true);
+		Gameboss.blur.ToggleTextHolders (true, 2);
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endText));
+	}
 
 	// Use this for initialization
 	void Start () {
