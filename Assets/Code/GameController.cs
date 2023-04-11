@@ -76,7 +76,9 @@ public class GameController : MonoBehaviour {
 		Gameboss.isAnimating = true;
 		Gameboss.blur.ToggleBlur (false, true, true,0.4f);
 		Gameboss.blur.ToggleFade (true,0.4f);
-		Gameboss.blur.endText.gameObject.SetActive (false);
+		Gameboss.blur.endTexts[0].gameObject.SetActive (false);
+		Gameboss.blur.endTexts[1].gameObject.SetActive (false);
+
 		Gameboss.blur.ToggleTextHolders (true, 2);
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.gameplayText));
 		StartCoroutine (EndTextTiming ());
@@ -84,9 +86,13 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator EndTextTiming(){
 		yield return new WaitForSeconds (0.4f);
-		Gameboss.blur.endText.gameObject.SetActive (true);
+		Gameboss.blur.endTexts[0].gameObject.SetActive (true);
 		Gameboss.blur.ToggleTextHolders (true, 2);
-		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endText));
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endTexts[0]));
+		yield return new WaitForSeconds (0.8f);
+		Gameboss.blur.endTexts[1].gameObject.SetActive (true);
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endTexts[1]));
+
 	}
 
 	// Use this for initialization

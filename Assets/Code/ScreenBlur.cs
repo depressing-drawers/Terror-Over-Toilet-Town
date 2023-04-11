@@ -10,7 +10,7 @@ public class ScreenBlur : MonoBehaviour {
 	public GameObject fadeObject;
 	public GameObject[] textHolders;
 	public TextMesh[] textObjects;
-	public TextMesh endText;
+	public TextMesh[] endTexts;
 	public TextMesh gameplayText;
 	public Material[] textMats;
 	public Material blurMat;
