@@ -85,6 +85,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator EndTextTiming(){
+		StallRankingSystem.ResultsData newResults = Gameboss.rank.BuildResultsText (Gameboss.stalls.currentStalls [Gameboss.movement.playerCoord [0]]);
 		yield return new WaitForSeconds (0.4f);
 		Gameboss.blur.endTexts[0].gameObject.SetActive (true);
 		Gameboss.blur.ToggleTextHolders (true, 2);
@@ -92,7 +93,7 @@ public class GameController : MonoBehaviour {
 		yield return new WaitForSeconds (0.8f);
 		Gameboss.blur.endTexts[1].gameObject.SetActive (true);
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endTexts[1]));
-
+		Gameboss.blur.endTexts [2].text = newResults.resultsText;
 	}
 
 	// Use this for initialization

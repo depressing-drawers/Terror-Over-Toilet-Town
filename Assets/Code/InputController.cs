@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputController : MonoBehaviour {
+
 
 	void InputLogic(){
 
@@ -19,6 +21,9 @@ public class InputController : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.N)) 	{Gameboss.gameControl.DenyTheShit ();			}
 			if (Input.GetKeyDown (KeyCode.Y)) 	{Gameboss.gameControl.AuthoriseShit ();			}
 
+		}else if(Gameboss.gameStage == Gameboss.stageOfGame.results){
+			if (Input.GetKeyDown (KeyCode.Escape)) {	Application.Quit ();
+			} else if(Input.anyKeyDown){				SceneManager.LoadScene ("mainLevel");	}
 		}
 	}
 

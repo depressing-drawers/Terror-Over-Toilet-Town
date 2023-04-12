@@ -6,7 +6,7 @@ public class StallSystem : MonoBehaviour {
 
 	public GameObject stallBasis;
 	public Transform stallEnd;
-	private float ruinationLimit = 0.8f;
+	public float ruinationLimit = 0.8f;
 
 	public class StallData{
 		public Dictionary<string, StallComponent> stallContents;
@@ -92,6 +92,8 @@ public class StallSystem : MonoBehaviour {
 
 
 	public void SetupStalls(){
+		if (currentStalls.Count > 0) {currentStalls.Clear ();}
+
 		for (int i = 0; i < 11; i++) {
 			currentStalls.Add(CreateNewStall ());
 		}
