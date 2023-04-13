@@ -7,6 +7,7 @@ public class StallSystem : MonoBehaviour {
 	public GameObject stallBasis;
 	public Transform stallEnd;
 	public float ruinationLimit = 0.8f;
+	public float flithLimit = 0.6f;
 
 	public class StallData{
 		public Dictionary<string, StallComponent> stallContents;

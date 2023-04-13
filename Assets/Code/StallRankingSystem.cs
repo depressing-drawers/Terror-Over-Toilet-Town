@@ -30,7 +30,13 @@ public class StallRankingSystem : MonoBehaviour {
 		/*15*/	"֍\tThere was no toilet bowl, so you shit on the floor like a feral dog\n\r",
 		/*16*/	"֍\tThe toilet bowl was revolting and it smelled real bad\n\r",
 		/*17*/	"֍\tYou wiped your ass with dirty toilet paper, your ass is dirtier than when you started\n\r",
-		/*18*/	"֍\tYou left the door unlocked, so someone walked in and watched you taking a shit and saw your junk\n\r"
+		/*18*/	"֍\tYou left the door unlocked, so someone walked in and watched you taking a shit and saw your junk\n\r",
+		/*19*/	"֍\tThe lock was disgusting and you got shit on your hand when you used it\n\r",
+		/*20*/	"֍\tThe interior handle was disgusting and you got shit on your hand when you used it\n\r",
+		/*21*/	"֍\tThe exterior handle was disgusting and you got shit on your hand when you used it\n\r",
+		/*22*/	"֍\tThe flusher handle was disgusting and you got shit on your hand when you used it\n\r"
+
+
 	};
 
 	private string[] resultsGenerics = new string[]{
@@ -40,7 +46,7 @@ public class StallRankingSystem : MonoBehaviour {
 	};
 
 	public float ReturnStallScore(StallSystem.StallData stall){
-		float stallScore = 10000;
+		float stallScore = 100;
 		float minusScore = 0;
 		foreach (KeyValuePair<string,StallSystem.StallComponent> stallPart in stall.stallContents) {
 			minusScore = (stallPart.Value.filth * 10) * stallPart.Value.multiplier;
@@ -52,6 +58,7 @@ public class StallRankingSystem : MonoBehaviour {
 	public ResultsData BuildResultsText(StallSystem.StallData stallChosen){
 		builder.Length = 0;
 		ResultsData newResults = new ResultsData ();
+		newResults.overallScore = -666;
 		builder.Append (resultsGenerics [0]);
 
 		if (Gameboss.movement.playerCoord [1] == 0 || Gameboss.movement.playerCoord [1] == 1) {
@@ -71,13 +78,33 @@ public class StallRankingSystem : MonoBehaviour {
 			else if (stallChosen.stallContents["lock"].ruination > Gameboss.stalls.ruinationLimit) {builder.Append (resultsText [7]);}
 
 
-
+			if (stallChosen.stallContents["right_wall"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["right_wall"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["door"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["door"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["exterior_handle"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["exterior_handle"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [21]);} 
+			if (stallChosen.stallContents["occupied_sign"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["occupied_sign"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["interior_handle"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["interior_handle"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [20]);} 
+			if (stallChosen.stallContents["lock"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["lock"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [19]);} 
+			if (stallChosen.stallContents["floor"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["floor"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [5]);} 
+			if (stallChosen.stallContents["ceiling"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["ceiling"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [4]);} 
+			if (stallChosen.stallContents["back_wall"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["back_wall"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["dispenser"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["dispenser"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["paper"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["paper"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [17]);} 
+			if (stallChosen.stallContents["bowl"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["bowl"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [16]);} 
+			if (stallChosen.stallContents["cistern"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["cistern"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["cistern_lid"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["cistern_lid"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["flusher"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["flusher"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [22]);} 
+			if (stallChosen.stallContents["toilet_lid"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["toilet_lid"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [10]);} 
+			if (stallChosen.stallContents["toilet_seat"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["toilet_seat"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [9]);} 
 
 
 		
 		}
 		builder.Append (resultsGenerics [1]);
-		builder.Append (newResults.overallScore.ToString ());
+		if (newResults.overallScore != -666) {
+			builder.Append (newResults.overallScore.ToString ());
+		} else {
+			builder.Append (stallChosen.stallScore.ToString());
+		}
 		builder.Append (resultsGenerics [2]);
 		newResults.resultsText = builder.ToString ();
 		return newResults;
