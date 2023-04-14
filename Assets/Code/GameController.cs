@@ -39,6 +39,28 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator StartTiming(){
+		Gameboss.blur.textObjects [0].color = new Color (Gameboss.blur.textObjects [0].color.r, Gameboss.blur.textObjects [0].color.b, Gameboss.blur.textObjects [0].color.g, 0);
+		Gameboss.blur.textObjects [1].color = new Color (Gameboss.blur.textObjects [1].color.r, Gameboss.blur.textObjects [1].color.b, Gameboss.blur.textObjects [1].color.g, 0);
+		Gameboss.blur.textObjects [2].color = new Color (Gameboss.blur.textObjects [2].color.r, Gameboss.blur.textObjects [2].color.b, Gameboss.blur.textObjects [2].color.g, 0);
+		Gameboss.blur.textObjects [3].color = new Color (Gameboss.blur.textObjects [3].color.r, Gameboss.blur.textObjects [3].color.b, Gameboss.blur.textObjects [3].color.g, 0);
+
+		Gameboss.blur.ToggleFade (false,2f);
+		yield return new WaitForSeconds (0.6f);
+
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 1f,Gameboss.blur.textObjects[0]));
+		yield return new WaitForSeconds (0.3f);
+
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 1f,Gameboss.blur.textObjects[1]));
+		yield return new WaitForSeconds (0.3f);
+
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 1f,Gameboss.blur.textObjects[2]));
+		yield return new WaitForSeconds (0.3f);
+
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 1f,Gameboss.blur.textObjects[3]));
+		yield return new WaitForSeconds (0.3f);
+
+
+
 		float startDelay = 0.8f;
 
 		float i = 0.0f;
@@ -93,7 +115,24 @@ public class GameController : MonoBehaviour {
 		yield return new WaitForSeconds (0.8f);
 		Gameboss.blur.endTexts[1].gameObject.SetActive (true);
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endTexts[1]));
+		yield return new WaitForSeconds (0.8f);
 		Gameboss.blur.endTexts [2].text = newResults.resultsText;
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endTexts[2]));
+
+	}
+
+	public void RestartGame(){
+		Gameboss.currentState = Gameboss.gameStates.loading;
+		StartCoroutine(RestartTiming());
+	}
+
+	IEnumerator RestartTiming(){
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.endTexts[0]));
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.endTexts[1]));
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.endTexts[2]));
+
+		yield return new WaitForSeconds (0.6f);
+		SceneManager.LoadScene ("mainLevel");
 	}
 
 	// Use this for initialization

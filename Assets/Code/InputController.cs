@@ -22,8 +22,8 @@ public class InputController : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.Y)) 	{Gameboss.gameControl.AuthoriseShit ();			}
 
 		}else if(Gameboss.gameStage == Gameboss.stageOfGame.results){
-			if (Input.GetKeyDown (KeyCode.Escape)) {	Application.Quit ();
-			} else if(Input.anyKeyDown){				SceneManager.LoadScene ("mainLevel");	}
+			if (Input.GetKeyDown (KeyCode.Escape)) 	{	Application.Quit ();
+			} else if(Input.anyKeyDown)				{	Gameboss.gameControl.RestartGame ();	}
 		}
 	}
 

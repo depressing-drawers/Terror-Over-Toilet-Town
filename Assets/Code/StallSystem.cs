@@ -229,21 +229,21 @@ public class StallSystem : MonoBehaviour {
 	StallData CreateNewStall(){
 		StallData newStall = new StallData ();
 		newStall.stallContents = new Dictionary<string, StallComponent> ();
-		CreateStallComponent ("right_wall", newStall,3);
-		CreateStallComponent ("door", newStall,3);
+		CreateStallComponent ("right_wall", newStall,6);
+		CreateStallComponent ("door", newStall,6);
 		CreateStallComponent ("exterior_handle", newStall,1);
-		CreateStallComponent ("occupied_sign", newStall,1);
-		CreateStallComponent ("interior_handle", newStall,1);
-		CreateStallComponent ("lock", newStall,3);
-		CreateStallComponent ("floor", newStall,2);
-		CreateStallComponent ("ceiling", newStall,1);
+		CreateStallComponent ("occupied_sign", newStall,2);
+		CreateStallComponent ("interior_handle", newStall,2);
+		CreateStallComponent ("lock", newStall,6);
+		CreateStallComponent ("floor", newStall,4);
+		CreateStallComponent ("ceiling", newStall,2);
 		CreateStallComponent ("back_wall", newStall,1);
-		CreateStallComponent ("dispenser", newStall,2);
-		CreateStallComponent ("paper", newStall,3);
-		CreateStallComponent ("bowl", newStall,3);
+		CreateStallComponent ("dispenser", newStall,4);
+		CreateStallComponent ("paper", newStall,6);
+		CreateStallComponent ("bowl", newStall,6);
 		CreateStallComponent ("cistern", newStall,2);
 		CreateStallComponent ("cistern_lid", newStall,1);
-		CreateStallComponent ("flusher", newStall,2);
+		CreateStallComponent ("flusher", newStall,4);
 		CreateStallComponent ("toilet_lid", newStall,1);
 		CreateStallComponent ("toilet_seat", newStall,3);
 
