@@ -58,7 +58,7 @@ public class StallSystem : MonoBehaviour {
 
 	public void ToggleDoor(){
 		StallData currentStall = currentStalls [Gameboss.movement.playerCoord [0]];
-		if (!currentStall.isLocked) {
+		if (!currentStall.isLocked && currentStall.doorState != lidState.missing) {
 
 			lidState targetState = lidState.open;
 			switch (currentStall.doorState) {
@@ -71,6 +71,8 @@ public class StallSystem : MonoBehaviour {
 			StartCoroutine (LidTiming (currentStall, new lidState[]{ currentStall.doorState, targetState }, true));
 	//		currentStall.doorState = targetState;
 	//		ApplyDoorState (currentStall);
+		}else if (currentStall.isLocked){
+			Gameboss.sound.PlaySound ("rattle", 0.2f);
 		}
 	}
 
@@ -105,6 +107,7 @@ public class StallSystem : MonoBehaviour {
 		     currentStall.stallContents ["flusher"].ruination <= ruinationLimit &&
 			!currentStall.flushAnim.IsInTransition(0) && currentStall.flushAnim.GetCurrentAnimatorStateInfo(0).IsTag("idle")) {
 			 currentStall.flushAnim.SetTrigger ("doFlush");
+			Gameboss.sound.PlaySound ("flush", 0.2f);
 		}
 	}
 
@@ -150,7 +153,14 @@ public class StallSystem : MonoBehaviour {
 		float rate = 1.0f / 0.15f;
 		Vector3[] eulerTargets = ReturnAppropriateLidEulers(lidTargets,isDoor);
 		Transform 		rotationObject = currentStall.doorObject;
-		if (!isDoor) {	rotationObject = currentStall.lidObject;	}
+		if (!isDoor) {
+			rotationObject = currentStall.lidObject;
+			Gameboss.sound.PlaySound ("lid", 0.2f);
+
+		} else {
+			Gameboss.sound.PlaySound ("doorMove", 0.35f);
+
+		}
 
 		while (i < 1.0f) {
 			i += Time.deltaTime * rate;
@@ -162,9 +172,12 @@ public class StallSystem : MonoBehaviour {
 		if (isDoor) {
 			currentStall.doorState = lidTargets[1];
 			ApplyDoorState (currentStall);
+			Gameboss.sound.PlaySound ("doorClunk", 0.35f);
+
 		} else {
 			currentStall.lidState = lidTargets[1];
 			ApplyLidState (currentStall);
+
 		}
 
 		Gameboss.isAnimating = false;
@@ -194,6 +207,8 @@ public class StallSystem : MonoBehaviour {
 				stall.signObject.localEulerAngles = new Vector3 (0, 90, 90);
 				stall.lockObject.localPosition = new Vector3 (-0.2f, 0, 0.56f);
 			}
+			Gameboss.sound.PlaySound ("doorLock", 0.2f);
+
 		}
 	}
 

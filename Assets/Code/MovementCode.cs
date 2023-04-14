@@ -50,6 +50,8 @@ public class MovementCode : MonoBehaviour {
 			//	playerCoord [0] = expectedValue;
 			//	MovePlayer ();
 				Gameboss.isAnimating = true;
+				Gameboss.sound.PlaySound ("woosh", 0.075f);
+
 				StartCoroutine(MovementTiming(new int[]{expectedValue, playerCoord[1]+0}));
 			}
 		}
@@ -64,6 +66,12 @@ public class MovementCode : MonoBehaviour {
 		Vector3 endPos		= new Vector3 (targetCoord [0] * widthValue, playerHeight, targetCoord [1] * widthValue);
 		Vector3[] rotationEulers = ReturnTargetEulers (targetCoord [1]);	
 
+		if ((targetCoord [1] == 2 || targetCoord [1] == 3)&&
+			Gameboss.stalls.currentStalls[targetCoord[0]].stallContents["floor"].filth > 0.5f) {
+			Gameboss.sound.PlaySound ("wetStep", 0.3f);
+				} else {
+			Gameboss.sound.PlaySound ("step", 0.15f);
+			} 
 
 		while (i < 1.0f) {
 			i += Time.deltaTime * rate;

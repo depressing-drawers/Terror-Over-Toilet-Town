@@ -12,7 +12,7 @@ public class Gameboss : MonoBehaviour {
 	public static StallSystem stalls;
 	public static ScreenBlur blur;
 	public static StallRankingSystem rank;
-
+	public static SoundMachine sound;
 
 	public static class GameOptions{			
 		//audio

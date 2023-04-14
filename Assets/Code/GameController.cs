@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour {
 		Gameboss.movement = GetComponent<MovementCode> ();
 		Gameboss.blur = GetComponent<ScreenBlur> ();
 		Gameboss.rank = GetComponent<StallRankingSystem> ();
+		Gameboss.sound = GetComponent<SoundMachine> ();
 
 		StartNewGame ();
 	}
@@ -29,6 +30,8 @@ public class GameController : MonoBehaviour {
 		//Gameboss.fader.SetupScreenFader ();
 
 		Gameboss.ResetPlayerData ();
+		Gameboss.sound.SetupSoundMachine ();
+
 		Gameboss.stalls.SetupStalls ();
 		Gameboss.blur.SetupBlurSystem ();
 
