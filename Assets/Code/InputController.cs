@@ -15,6 +15,8 @@ public class InputController : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.D)) 		{Gameboss.movement.MovePlayerLocation (true);	}
 		if (Input.GetKeyDown (KeyCode.A)) 		{Gameboss.movement.MovePlayerLocation (false);	}
 		if (Input.GetKeyDown (KeyCode.Space)) 	{ContextSensitiveInput ();						}
+		if (Input.GetKeyDown (KeyCode.E)) 		{OperateContextInput ();						}
+
 		if (Input.GetKeyDown (KeyCode.Return))	{Gameboss.gameControl.PrepareToShit ();			}
 
 		}else if(Gameboss.gameStage == Gameboss.stageOfGame.shitCheck){
@@ -42,6 +44,23 @@ public class InputController : MonoBehaviour {
 			}break;
 		}
 	}
+
+
+	void OperateContextInput(){
+		switch (Gameboss.movement.playerCoord [1]) {
+		case(2):
+			if (!Gameboss.movement.facingForward) {
+				Gameboss.stalls.ToggleLock ();
+					} else {
+				Gameboss.stalls.FlushToilet ();
+			}break;
+		case(3):
+			if (!Gameboss.movement.facingForward) {
+				Gameboss.stalls.ToggleLock ();
+			}break;
+		}	
+	}
+
 
 
 	// Use this for initialization

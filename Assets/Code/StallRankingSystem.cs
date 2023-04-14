@@ -12,38 +12,38 @@ public class StallRankingSystem : MonoBehaviour {
 	}
 
 	private string[] resultsText = new string[]{
-		/*0*/	"☻\tYou shit straight on the floor like a filthy animal, without even going into a stall\n\r",
-		/*1*/	"☻\tYou shit straight on the floor like a dirty ape, but at least you did it in a stall\n\r",
-		/*2*/	"☻\tYou forgot to put the toilet lid up and shit right on top of the bastard, DISGUSTING\n\r",
-		/*3*/	"☻\tYou left the door open, so someone walked in and watched you taking a shit and saw your junk\n\r",
-		/*4*/	"☻\tThe ceiling was disgusting and it dripped filth right on you during your shit\n\r",
-		/*5*/	"☻\tThe floor was disgusting and you got shit all over your shoes\n\r",
-		/*6*/	"☻\tThe occupation sign was missing and someone rudely rattled the door during your shit\n\r",
-		/*7*/	"☻\tThe lock was missing, so someone interrupted your shit and saw your junk\n\r",
-		/*8*/	"☻\tThere was no toilet seat, so you had to shit on the bare toilet bowl\n\r",
-		/*9*/	"☻\tYou had to sit on a filthy toilet seat, and caught a disease\n\r",
-		/*10*/	"☻\tThe toilet lid was disgusting and you got shit on your hand when you lifted it up\n\r",
-		/*11*/	"☻\tYou couldnt flush the toilet, branding you as a subhuman cretin\n\r",
-		/*12*/	"☻\tThere was no toilet paper so you had to leave with a dirty ass and got shit all over your underpants\n\r",
-		/*13*/	"☻\tThe wall was missing, so someone watched you taking a shit and saw your junk\n\r",
-		/*14*/	"☻\tThe door was missing, so someone watched you taking a shit and saw your junk\n\r",
-		/*15*/	"☻\tThere was no toilet bowl, so you shit on the floor like a feral dog\n\r",
-		/*16*/	"☻\tThe toilet bowl was revolting and it smelled real bad\n\r",
-		/*17*/	"☻\tYou wiped your ass with dirty toilet paper, your ass is dirtier than when you started\n\r",
-		/*18*/	"☻\tYou left the door unlocked, so someone walked in and watched you taking a shit and saw your junk\n\r",
-		/*19*/	"☻\tThe lock was disgusting and you got shit on your hand when you used it\n\r",
-		/*20*/	"☻\tThe interior handle was disgusting and you got shit on your hand when you used it\n\r",
-		/*21*/	"☻\tThe exterior handle was disgusting and you got shit on your hand when you used it\n\r",
-		/*22*/	"☻\tThe flusher handle was disgusting and you got shit on your hand when you used it\n\r"
+		/*0*/	"You shit straight on the floor like a filthy animal, without even going into a stall\n\r",
+		/*1*/	"You shit straight on the floor like a dirty ape, but at least you did it in a stall\n\r",
+		/*2*/	"You forgot to put the toilet lid up and shit right on top of it, DISGUSTING\n\r",
+		/*3*/	"You left the door open, so someone watched you taking a shit and saw your junk\n\r",
+		/*4*/	"The ceiling was disgusting and it dripped filth right on you during your shit\n\r",
+		/*5*/	"The floor was disgusting and you got shit all over your shoes\n\r",
+		/*6*/	"The occupation sign was missing and someone rudely rattled the door during your shit\n\r",
+		/*7*/	"The lock was missing, so someone interrupted your shit and saw your junk\n\r",
+		/*8*/	"There was no toilet seat, so you had to shit on the bare toilet bowl\n\r",
+		/*9*/	"You had to sit on a filthy toilet seat, and caught a disease\n\r",
+		/*10*/	"The toilet lid was disgusting and you got shit on your hand when you lifted it up\n\r",
+		/*11*/	"You couldnt flush the toilet, branding you as a subhuman cretin\n\r",
+		/*12*/	"There was no toilet paper so you had to leave with a dirty ass and shit all over your underpants\n\r",
+		/*13*/	"The wall was missing, so someone watched you taking a shit and saw your junk\n\r",
+		/*14*/	"The door was missing, so someone watched you taking a shit and saw your junk\n\r",
+		/*15*/	"There was no toilet bowl, so you shit on the floor like a feral dog\n\r",
+		/*16*/	"The toilet bowl was revolting and it smelled real bad\n\r",
+		/*17*/	"You wiped your ass with dirty toilet paper, your ass is dirtier than when you started\n\r",
+		/*18*/	"You left the door unlocked, so someone walked in and watched you taking a shit and saw your junk\n\r",
+		/*19*/	"The lock was disgusting and you got shit on your hand when you used it\n\r",
+		/*20*/	"The interior handle was disgusting and you got shit on your hand when you used it\n\r",
+		/*21*/	"The exterior handle was disgusting and you got shit on your hand when you used it\n\r",
+		/*22*/	"The flusher handle was disgusting and you got shit on your hand when you used it\n\r"
 
 
 	};
 
 	private string[] resultsGenerics = new string[]{
-		"RESULTS\n\r-----------\n\r",
+		"RESULTS:\n\r",
 		"\n\r\n\rYOUR SCORE: ",
 		"\n\r\n\rPRESS ANY KEY TO CONTINUE",
-		"YOU CHOSE STALL NUMBER: ",
+		"YOU CHOSE STALL NUMBER ",
 		"\n\rTHE BEST STALL WAS NUMBER "
 	};
 
@@ -69,7 +69,8 @@ public class StallRankingSystem : MonoBehaviour {
 		builder.Append (bestStallData.resultsText);
 		builder.Append ("\n\rWHICH WAS WORTH ");
 		builder.Append (bestStallData.overallScore.ToString ());
-		builder.Append (" POINTS OUT OF 100\n\r\n\r");
+		builder.Append (" POINTS OUT OF 100\n\r");
+		builder.Append ("\n\r\n\rNOTES:\n\r");
 
 		if (Gameboss.movement.playerCoord [1] == 0 || Gameboss.movement.playerCoord [1] == 1) {
 			builder.Append (resultsText [0]);
@@ -81,30 +82,68 @@ public class StallRankingSystem : MonoBehaviour {
 			
 			if (stallChosen.doorState != StallSystem.lidState.closed && stallChosen.doorState != StallSystem.lidState.missing ) {builder.Append (resultsText [3]);}
 			else if (stallChosen.doorState == StallSystem.lidState.missing){builder.Append (resultsText [14]);}
-
-			if (stallChosen.stallContents["right_wall"].ruination > Gameboss.stalls.ruinationLimit ){builder.Append (resultsText [13]);}
-
-			if (stallChosen.isLocked == false && stallChosen.stallContents["lock"].ruination <= Gameboss.stalls.ruinationLimit) {builder.Append (resultsText [18]);}
+			else if (stallChosen.isLocked == false && stallChosen.stallContents["lock"].ruination <= Gameboss.stalls.ruinationLimit) {builder.Append (resultsText [18]);}
 			else if (stallChosen.stallContents["lock"].ruination > Gameboss.stalls.ruinationLimit) {builder.Append (resultsText [7]);}
 
 
-			if (stallChosen.stallContents["right_wall"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["right_wall"].filth > Gameboss.stalls.flithLimit){} 
-			if (stallChosen.stallContents["door"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["door"].filth > Gameboss.stalls.flithLimit){} 
-			if (stallChosen.stallContents["exterior_handle"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["exterior_handle"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [21]);} 
-			if (stallChosen.stallContents["occupied_sign"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["occupied_sign"].filth > Gameboss.stalls.flithLimit){} 
-			if (stallChosen.stallContents["interior_handle"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["interior_handle"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [20]);} 
-			if (stallChosen.stallContents["lock"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["lock"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [19]);} 
-			if (stallChosen.stallContents["floor"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["floor"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [5]);} 
-			if (stallChosen.stallContents["ceiling"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["ceiling"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [4]);} 
-			if (stallChosen.stallContents["back_wall"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["back_wall"].filth > Gameboss.stalls.flithLimit){} 
-			if (stallChosen.stallContents["dispenser"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["dispenser"].filth > Gameboss.stalls.flithLimit){} 
-			if (stallChosen.stallContents["paper"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["paper"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [17]);} 
-			if (stallChosen.stallContents["bowl"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["bowl"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [16]);} 
-			if (stallChosen.stallContents["cistern"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["cistern"].filth > Gameboss.stalls.flithLimit){} 
-			if (stallChosen.stallContents["cistern_lid"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["cistern_lid"].filth > Gameboss.stalls.flithLimit){} 
-			if (stallChosen.stallContents["flusher"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["flusher"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [22]);} 
-			if (stallChosen.stallContents["toilet_lid"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["toilet_lid"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [10]);} 
-			if (stallChosen.stallContents["toilet_seat"].ruination < Gameboss.stalls.ruinationLimit && stallChosen.stallContents["toilet_seat"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [9]);} 
+			if (stallChosen.stallContents["right_wall"].ruination > Gameboss.stalls.ruinationLimit ){builder.Append (resultsText [13]);}
+
+
+			if (stallChosen.lidState != StallSystem.lidState.open && stallChosen.stallContents ["toilet_lid"].ruination < Gameboss.stalls.ruinationLimit) {
+				builder.Append (resultsText [2]);
+			}
+			if (stallChosen.isLocked && stallChosen.stallContents ["occupied_sign"].ruination > Gameboss.stalls.ruinationLimit) {
+				builder.Append (resultsText [6]);
+			}
+			if (stallChosen.stallContents ["cistern"].ruination > Gameboss.stalls.ruinationLimit ||
+				stallChosen.stallContents ["flusher"].ruination > Gameboss.stalls.ruinationLimit) {
+				builder.Append (resultsText [11]);
+			}
+			if (stallChosen.stallContents ["paper"].ruination > Gameboss.stalls.ruinationLimit) {
+				builder.Append (resultsText [12]);
+			}
+			if (stallChosen.stallContents ["bowl"].ruination > Gameboss.stalls.ruinationLimit) {
+				builder.Append (resultsText [15]);
+			}
+
+
+
+
+			//this needs a refactor although doesnt make much difference after its compiled but oh well
+			if (stallChosen.stallContents["right_wall"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["right_wall"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["door"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["door"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["exterior_handle"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["exterior_handle"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [21]);} 
+			if (stallChosen.stallContents["occupied_sign"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["occupied_sign"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["interior_handle"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["interior_handle"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [20]);} 
+			if (stallChosen.isLocked && stallChosen.stallContents["lock"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["lock"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [19]);} 
+			if (stallChosen.stallContents["floor"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["floor"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [5]);} 
+			if (stallChosen.stallContents["ceiling"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["ceiling"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [4]);} 
+			if (stallChosen.stallContents["back_wall"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["back_wall"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["dispenser"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["dispenser"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["paper"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["paper"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [17]);} 
+			if (stallChosen.stallContents["bowl"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["bowl"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [16]);} 
+			if (stallChosen.stallContents["cistern"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["cistern"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["cistern_lid"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["cistern_lid"].filth > Gameboss.stalls.flithLimit){} 
+			if (stallChosen.stallContents["flusher"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["flusher"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [22]);} 
+			if (stallChosen.lidState == StallSystem.lidState.open && stallChosen.stallContents["toilet_lid"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["toilet_lid"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [10]);} 
+			if (stallChosen.stallContents["toilet_seat"].ruination < Gameboss.stalls.ruinationLimit &&
+				stallChosen.stallContents["toilet_seat"].filth > Gameboss.stalls.flithLimit){builder.Append (resultsText [9]);} 
 
 
 		

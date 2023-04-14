@@ -39,10 +39,13 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator StartTiming(){
+		Gameboss.blur.gameplayText.gameObject.SetActive (false);
 		Gameboss.blur.textObjects [0].color = new Color (Gameboss.blur.textObjects [0].color.r, Gameboss.blur.textObjects [0].color.b, Gameboss.blur.textObjects [0].color.g, 0);
 		Gameboss.blur.textObjects [1].color = new Color (Gameboss.blur.textObjects [1].color.r, Gameboss.blur.textObjects [1].color.b, Gameboss.blur.textObjects [1].color.g, 0);
 		Gameboss.blur.textObjects [2].color = new Color (Gameboss.blur.textObjects [2].color.r, Gameboss.blur.textObjects [2].color.b, Gameboss.blur.textObjects [2].color.g, 0);
 		Gameboss.blur.textObjects [3].color = new Color (Gameboss.blur.textObjects [3].color.r, Gameboss.blur.textObjects [3].color.b, Gameboss.blur.textObjects [3].color.g, 0);
+		Gameboss.blur.textObjects [4].color = new Color (Gameboss.blur.textObjects [4].color.r, Gameboss.blur.textObjects [4].color.b, Gameboss.blur.textObjects [4].color.g, 0);
+
 
 		Gameboss.blur.ToggleFade (false,2f);
 		yield return new WaitForSeconds (0.6f);
@@ -59,6 +62,8 @@ public class GameController : MonoBehaviour {
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 1f,Gameboss.blur.textObjects[3]));
 		yield return new WaitForSeconds (0.3f);
 
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 1f,Gameboss.blur.textObjects[4]));
+		yield return new WaitForSeconds (0.3f);
 
 
 		float startDelay = 0.8f;
@@ -71,6 +76,8 @@ public class GameController : MonoBehaviour {
 			if (Input.anyKeyDown) {break;}
 			yield return null;
 		}
+		Gameboss.blur.gameplayText.gameObject.SetActive (true);
+		StartCoroutine (Gameboss.blur.SeperateTextTiming (true,startDelay,Gameboss.blur.gameplayText));
 
 		Gameboss.blur.ToggleBlur (false, true, true, startDelay);
 		yield return new WaitForSeconds (startDelay);
@@ -96,6 +103,7 @@ public class GameController : MonoBehaviour {
 	public void AuthoriseShit(){
 		Gameboss.gameStage = Gameboss.stageOfGame.results;	
 		Gameboss.isAnimating = true;
+		Gameboss.currentState = Gameboss.gameStates.loading;
 		Gameboss.blur.ToggleBlur (false, true, true,0.4f);
 		Gameboss.blur.ToggleFade (true,0.4f);
 		Gameboss.blur.endTexts[0].gameObject.SetActive (false);
@@ -118,6 +126,8 @@ public class GameController : MonoBehaviour {
 		yield return new WaitForSeconds (0.8f);
 		Gameboss.blur.endTexts [2].text = newResults.resultsText;
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endTexts[2]));
+		yield return new WaitForSeconds (0.4f);
+		Gameboss.currentState = Gameboss.gameStates.ingame;
 
 	}
 

@@ -18,6 +18,8 @@ public class StallSystem : MonoBehaviour {
 		public Transform doorObject;
 		public Transform lidObject;
 		public Transform signObject;
+		public Transform lockObject;
+		public Animator flushAnim;
 		public bool isLocked;
 		public float stallScore;
 	}
@@ -90,6 +92,21 @@ public class StallSystem : MonoBehaviour {
 	//		ApplyLidState (currentStall);
 	}
 
+	public void ToggleLock(){
+		StallData currentStall = currentStalls [Gameboss.movement.playerCoord [0]];
+		currentStall.isLocked = !currentStall.isLocked;
+		ApplyLockState (currentStall);
+	}
+
+	public void FlushToilet(){
+		StallData currentStall = currentStalls [Gameboss.movement.playerCoord [0]];
+		if ( currentStall.stallContents ["bowl"].ruination <= ruinationLimit &&
+		     currentStall.stallContents ["cistern"].ruination <= ruinationLimit &&
+		     currentStall.stallContents ["flusher"].ruination <= ruinationLimit &&
+			!currentStall.flushAnim.IsInTransition(0) && currentStall.flushAnim.GetCurrentAnimatorStateInfo(0).IsTag("idle")) {
+			 currentStall.flushAnim.SetTrigger ("doFlush");
+		}
+	}
 
 
 	public void SetupStalls(){
@@ -169,10 +186,14 @@ public class StallSystem : MonoBehaviour {
 
 
 	void ApplyLockState(StallData stall){
-		if (stall.isLocked) {
-			stall.signObject.localEulerAngles = new Vector3 (180, 90, 90);
-		} else {
-			stall.signObject.localEulerAngles = new Vector3 (0, 90, 90);
+		if (stall.doorState == lidState.closed && stall.stallContents["lock"].ruination < ruinationLimit) {
+			if (stall.isLocked) {
+				stall.signObject.localEulerAngles = new Vector3 (180, 90, 90);
+				stall.lockObject.localPosition = new Vector3 (0.3f, 0, 0.56f);
+			} else {
+				stall.signObject.localEulerAngles = new Vector3 (0, 90, 90);
+				stall.lockObject.localPosition = new Vector3 (-0.2f, 0, 0.56f);
+			}
 		}
 	}
 
@@ -181,8 +202,9 @@ public class StallSystem : MonoBehaviour {
 		for (int i = 0; i < stall.stallProp.transform.childCount; i++) {
 			string childName = stall.stallProp.transform.GetChild (i).name;
 
-			if (childName == "door_axis") 		{ stall.doorObject 	= stall.stallProp.transform.GetChild (i);				}
-			if (childName == "toilet_lid_axis") { stall.lidObject 	= stall.stallProp.transform.GetChild (i);				}
+			if (childName == "flusher") 		{ stall.flushAnim 	= stall.stallProp.transform.GetChild (i).GetComponent<Animator>();	}
+			if (childName == "door_axis") 		{ stall.doorObject 	= stall.stallProp.transform.GetChild (i);							}
+			if (childName == "toilet_lid_axis") { stall.lidObject 	= stall.stallProp.transform.GetChild (i);							}
 
 
 			if (stall.stallContents.ContainsKey (childName)) {
@@ -200,7 +222,8 @@ public class StallSystem : MonoBehaviour {
 				for (int j = 0; j < stall.stallProp.transform.GetChild (i).childCount; j++) {
 					string subChildName = stall.stallProp.transform.GetChild (i).GetChild (j).name;
 
-					if (subChildName == "occupied_sign") 	{ stall.signObject 	= stall.stallProp.transform.GetChild (i).GetChild(j).Find("sign");	}
+					if (subChildName == "occupied_sign") 	{ stall.signObject 	= stall.stallProp.transform.GetChild (i).GetChild(j).Find("sign");			}
+					if (subChildName == "lock") 			{ stall.lockObject 	= stall.stallProp.transform.GetChild (i).GetChild(j).Find("lockLength");	}
 
 
 					if (stall.stallContents.ContainsKey (subChildName)) {
