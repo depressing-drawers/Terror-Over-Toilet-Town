@@ -33,7 +33,11 @@ public class SoundMachine : MonoBehaviour {
 		CreateSoundEntry (7, "doorMove");
 		CreateSoundEntry (8, "doorLock");
 		CreateSoundEntry (9, "lid");
-
+		CreateSoundEntry (10, "rising");
+		CreateSoundEntry (11, "falling");
+		CreateSoundEntry (12, "start");
+		CreateSoundEntry (13, "boom");
+		CreateSoundEntry (14, "finalImpact");
 
 	}
 

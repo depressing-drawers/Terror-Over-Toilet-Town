@@ -95,9 +95,12 @@ public class StallSystem : MonoBehaviour {
 	}
 
 	public void ToggleLock(){
+		
 		StallData currentStall = currentStalls [Gameboss.movement.playerCoord [0]];
-		currentStall.isLocked = !currentStall.isLocked;
-		ApplyLockState (currentStall);
+		if (currentStall.stallContents ["lock"].ruination <= ruinationLimit) {
+			currentStall.isLocked = !currentStall.isLocked;
+			ApplyLockState (currentStall);
+		}
 	}
 
 	public void FlushToilet(){

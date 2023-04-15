@@ -44,7 +44,8 @@ public class StallRankingSystem : MonoBehaviour {
 		"\n\r\n\rYOUR SCORE: ",
 		"\n\r\n\rPRESS ANY KEY TO CONTINUE",
 		"YOU CHOSE STALL NUMBER ",
-		"\n\rTHE BEST STALL WAS NUMBER "
+		"\n\rTHE BEST STALL WAS NUMBER ",
+		"\n\r\n\rPRESS ANY KEY TO CONTINUE, OR ESC TO QUIT"
 	};
 
 	public float ReturnStallScore(StallSystem.StallData stall){
@@ -155,7 +156,11 @@ public class StallRankingSystem : MonoBehaviour {
 			builder.Append (stallChosen.stallScore.ToString());
 		}
 		builder.Append (" out of 100");
-		builder.Append (resultsGenerics [2]);
+		if (!Gameboss.gameControl.standAloneBuild) {
+			builder.Append (resultsGenerics [2]);
+		} else {
+			builder.Append (resultsGenerics [5]);
+		}
 		newResults.resultsText = builder.ToString ();
 		return newResults;
 	}

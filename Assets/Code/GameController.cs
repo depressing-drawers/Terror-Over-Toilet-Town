@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
 	public StringBuilder builder = new StringBuilder();
+	public bool standAloneBuild = false;
 
 	void SetupGame(){
 		Gameboss.currentState = Gameboss.gameStates.loading;
@@ -79,6 +80,8 @@ public class GameController : MonoBehaviour {
 			if (Input.anyKeyDown) {break;}
 			yield return null;
 		}
+		Gameboss.sound.PlaySound ("start", 0.2f);
+
 		Gameboss.blur.gameplayText.gameObject.SetActive (true);
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (true,startDelay,Gameboss.blur.gameplayText));
 
@@ -90,6 +93,7 @@ public class GameController : MonoBehaviour {
 
 
 	public void PrepareToShit(){
+		Gameboss.sound.PlaySound ("rising", 0.3f);
 		Gameboss.gameStage = Gameboss.stageOfGame.shitCheck;
 		Gameboss.isAnimating = true;
 		Gameboss.blur.ToggleTextHolders (false);
@@ -98,12 +102,15 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void DenyTheShit(){
+		Gameboss.sound.PlaySound ("falling", 0.3f);
 		Gameboss.gameStage = Gameboss.stageOfGame.game;
 		Gameboss.isAnimating = true;
 		Gameboss.blur.ToggleBlur (false, true, true,0.4f);
 	}
 
 	public void AuthoriseShit(){
+		Gameboss.sound.PlaySound ("boom", 0.3f);
+
 		Gameboss.gameStage = Gameboss.stageOfGame.results;	
 		Gameboss.isAnimating = true;
 		Gameboss.currentState = Gameboss.gameStates.loading;
@@ -120,6 +127,8 @@ public class GameController : MonoBehaviour {
 	IEnumerator EndTextTiming(){
 		StallRankingSystem.ResultsData newResults = Gameboss.rank.BuildResultsText (Gameboss.stalls.currentStalls [Gameboss.movement.playerCoord [0]]);
 		yield return new WaitForSeconds (0.4f);
+		Gameboss.sound.PlaySound ("finalImpact", 0.3f);
+
 		Gameboss.blur.endTexts[0].gameObject.SetActive (true);
 		Gameboss.blur.ToggleTextHolders (true, 2);
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (true, 0.4f,Gameboss.blur.endTexts[0]));
@@ -143,6 +152,7 @@ public class GameController : MonoBehaviour {
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.endTexts[0]));
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.endTexts[1]));
 		StartCoroutine (Gameboss.blur.SeperateTextTiming (false, 0.4f,Gameboss.blur.endTexts[2]));
+		Gameboss.sound.PlaySound ("falling", 0.3f);
 
 		yield return new WaitForSeconds (0.6f);
 		SceneManager.LoadScene ("mainLevel");
