@@ -202,7 +202,7 @@ public class StallSystem : MonoBehaviour {
 
 
 	void ApplyLockState(StallData stall){
-		if (stall.doorState == lidState.closed && stall.stallContents["lock"].ruination < ruinationLimit) {
+		if (stall.doorState == lidState.closed && stall.stallContents["lock"].ruination <= ruinationLimit) {
 			if (stall.isLocked) {
 				stall.signObject.localEulerAngles = new Vector3 (180, 90, 90);
 				stall.lockObject.localPosition = new Vector3 (0.3f, 0, 0.56f);
