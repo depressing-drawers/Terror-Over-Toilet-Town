@@ -44,8 +44,9 @@ public class StallRankingSystem : MonoBehaviour {
 		"\n\r\n\rYOUR SCORE: ",
 		"\n\r\n\rPRESS ANY KEY TO CONTINUE",
 		"YOU CHOSE STALL NUMBER ",
-		"\n\rTHE BEST STALL WAS NUMBER ",
-		"\n\r\n\rPRESS ANY KEY TO CONTINUE, OR ESC TO QUIT"
+		"\n\r\n\rTHE BEST STALL WAS NUMBER ",
+		"\n\r\n\rPRESS ANY KEY TO CONTINUE, OR ESC TO QUIT",
+		"YOU FAILED TO ENTER A STALL AND FORFEITED YOUR SCORE"
 	};
 
 	public float ReturnStallScore(StallSystem.StallData stall){
@@ -64,8 +65,13 @@ public class StallRankingSystem : MonoBehaviour {
 		ResultsData newResults = new ResultsData ();
 		newResults.overallScore = -666;
 		builder.Append (resultsGenerics [0]);
-		builder.Append (resultsGenerics[3]);
-		builder.Append (Gameboss.movement.playerCoord [0].ToString ());
+		if (Gameboss.movement.playerCoord [1] == 0 || Gameboss.movement.playerCoord [1] == 1) {
+			builder.Append (resultsGenerics[6]);
+		} else {
+			builder.Append (resultsGenerics[3]);
+			builder.Append (Gameboss.movement.playerCoord [0].ToString ());
+		}
+
 		builder.Append (resultsGenerics[4]);
 		builder.Append (bestStallData.resultsText);
 		builder.Append ("\n\rWHICH WAS WORTH ");
