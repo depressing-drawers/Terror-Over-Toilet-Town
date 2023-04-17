@@ -43,10 +43,12 @@ public class StallRankingSystem : MonoBehaviour {
 		"RESULTS:\n\r",
 		"\n\r\n\rYOUR SCORE: ",
 		"\n\r\n\rPRESS ANY KEY TO CONTINUE",
-		"YOU CHOSE STALL NUMBER ",
+		"STALL NUMBER ",
 		"\n\r\n\rTHE BEST STALL WAS NUMBER ",
 		"\n\r\n\rPRESS ANY KEY TO CONTINUE, OR ESC TO QUIT",
-		"YOU FAILED TO ENTER A STALL AND FORFEITED YOUR SCORE"
+		"YOU FAILED TO ENTER A STALL AND FORFEITED YOUR SCORE",
+		"IT TOOK ",
+		" FOR YOU TO CHOOSE "
 	};
 
 	public float ReturnStallScore(StallSystem.StallData stall){
@@ -60,14 +62,33 @@ public class StallRankingSystem : MonoBehaviour {
 	}
 
 	public ResultsData BuildResultsText(StallSystem.StallData stallChosen){
+		
 		builder.Length = 0;
 		ResultsData bestStallData = ReturnBestStall ();
 		ResultsData newResults = new ResultsData ();
 		newResults.overallScore = -666;
-		builder.Append (resultsGenerics [0]);
+		//builder.Append (resultsGenerics [0]);
+
+		System.TimeSpan runDuration = Gameboss.RunStats.endTime - Gameboss.RunStats.startTime;
+		string formattedDuration = string.Join ("", new string[]{runDuration.Minutes.ToString(),
+			" MINUTES, ",runDuration.Seconds.ToString()," SECONDS"});
+		if (runDuration.Minutes < 2 && runDuration.Minutes >= 1) {
+			formattedDuration = string.Join ("", new string[]{runDuration.Minutes.ToString(),
+				" MINUTE, ",runDuration.Seconds.ToString()," SECONDS"});
+		}else if (runDuration.Minutes < 1) {
+			formattedDuration = string.Join ("", new string[]{runDuration.Seconds.ToString()," SECONDS"});
+		}
+
+
+		builder.Append(resultsGenerics[7]);
+		builder.Append(formattedDuration);
+
+
 		if (Gameboss.movement.playerCoord [1] == 0 || Gameboss.movement.playerCoord [1] == 1) {
+			builder.Append ("\n\r");
 			builder.Append (resultsGenerics[6]);
 		} else {
+			builder.Append(resultsGenerics[8]);
 			builder.Append (resultsGenerics[3]);
 			builder.Append (Gameboss.movement.playerCoord [0].ToString ());
 		}
@@ -77,7 +98,7 @@ public class StallRankingSystem : MonoBehaviour {
 		builder.Append ("\n\rWHICH WAS WORTH ");
 		builder.Append (bestStallData.overallScore.ToString ());
 		builder.Append (" POINTS OUT OF 100\n\r");
-		builder.Append ("\n\r\n\rNOTES:\n\r");
+		builder.Append ("\n\rNOTES:\n\r");
 
 		if (Gameboss.movement.playerCoord [1] == 0 || Gameboss.movement.playerCoord [1] == 1) {
 			builder.Append (resultsText [0]);

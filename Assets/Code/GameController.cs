@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
 	public bool standAloneBuild = false;
 
 	void SetupGame(){
+		
 		Gameboss.currentState = Gameboss.gameStates.loading;
 		Gameboss.gameStage = Gameboss.stageOfGame.title;
 	//	Cursor.visible = false;
@@ -87,6 +88,7 @@ public class GameController : MonoBehaviour {
 
 		Gameboss.blur.ToggleBlur (false, true, true, startDelay);
 		yield return new WaitForSeconds (startDelay);
+		Gameboss.RunStats.startTime = System.DateTime.Now;
 		Gameboss.currentState = Gameboss.gameStates.ingame;
 		Gameboss.gameStage = Gameboss.stageOfGame.game;
 	}
@@ -110,7 +112,7 @@ public class GameController : MonoBehaviour {
 
 	public void AuthoriseShit(){
 		Gameboss.sound.PlaySound ("boom", 0.3f);
-
+		Gameboss.RunStats.endTime = System.DateTime.Now;
 		Gameboss.gameStage = Gameboss.stageOfGame.results;	
 		Gameboss.isAnimating = true;
 		Gameboss.currentState = Gameboss.gameStates.loading;
